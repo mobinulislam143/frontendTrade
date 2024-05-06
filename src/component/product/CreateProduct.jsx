@@ -52,7 +52,7 @@ function CreateProduct(props) {
         <div>
         <div className='container-fluid'>
           <div className='container mx-auto my-5'>
-             <h2 className='text-3xl font-bold text-center my-10'>Update Product</h2>
+             <h2 className='text-3xl font-bold text-center my-10'>Create Product</h2>
              <div className='card shadow-sm p-4 bg-white'>
                      <div className='grid lg:grid-cols-2 gap-4 sm:grid-cols-1'>
                         <div className='image flex flex-col items-center'>

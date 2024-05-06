@@ -3,6 +3,8 @@ import axios from 'axios'
 import { getEmail, setEmail } from '../utility/utility'
 import Cookie from 'js-cookie'
 
+const BaseUrl = "https://backendtradeapi.onrender.com"
+
 
 const UserStore = create((set, get) => ({
 
@@ -25,11 +27,11 @@ const UserStore = create((set, get) => ({
     UserRegistrationRequest: async(postBody)=> {
         try{
             set({isFormSubmit: true})
-            let res = await axios.post('/api/registration',postBody)
+            let res = await axios.post(`${BaseUrl}/api/registration`,postBody)
             setEmail(postBody.email)
             set({isFormSubmit: false})
             return res.data['status'] === 'success'
-        }catch(err){
+        }catch(e){
             console.log(e.toString())
             return false
         }
@@ -50,7 +52,7 @@ const UserStore = create((set, get) => ({
     VerifyOtpRequest: async(otp)=>{
         set({isFormSubmit:true})
         let email= getEmail()
-        let res  = await axios.get(`/api/otpVerify/${email}/${otp}`)
+        let res  = await axios.get(`${BaseUrl}/api/otpVerify/${email}/${otp}`)
         set({isFormSubmit:false})
         return res.data['status'] === "success";
     },
@@ -68,7 +70,15 @@ const UserStore = create((set, get) => ({
     UserLoginRequest: async(postBody)=>{
         try{
             set({isFormSubmit: true})
-            let res = await axios.post(`/api/login`, postBody)
+            let res = await axios.post(`${BaseUrl}/api/login`, postBody, null, {
+                headers:{
+                    'token': Cookie.get('token')
+                }
+            });
+            if(res.data.status === 'success'){
+                const token = res.data.token;
+                Cookie.set('token', token, {expires:7})
+            }
             set({isFormSubmit: false})
             return res.data['status']==='success'
 
@@ -80,17 +90,29 @@ const UserStore = create((set, get) => ({
 
     UserLogoutRequest: async()=>{
         set({isFormSubmit: true})
-        let res = await axios.get('/api/logout')
-        set({isFormSubmit: false})
-        return res.data['status'] === "success";
+        let res = await axios.get(`${BaseUrl}/api/logout`,{headers: {
+            'token': Cookie.get('token')
+        }})
+
+          if (res.data['status'] === "success") {
+            Cookie.remove('token');
+            set({ isFormSubmit: false });
+            return true;
+        } else {
+            set({ isFormSubmit: false });
+            return false;
+        }
     },
 
     ProfileDetails: null,
     userProfileRequest: async()=>{
         try{
-            let res = await axios.get('/api/profile')
+            let res = await axios.get(`${BaseUrl}/api/profile`, {
+                headers: {
+                    'token': Cookie.get('token')
+                }
+            })
             set({ProfileDetails: res.data.data[0]})
-            // console.log(res.data.data[0])
         }catch(e){
             console.log(e.toString())
             return false
@@ -104,9 +126,10 @@ const UserStore = create((set, get) => ({
             const formData = new FormData();
             formData.append('profileImage', imageData);
 
-            let res = await axios.post('/api/changeImage', formData, {
+            let res = await axios.post(`${BaseUrl}/api/changeImage`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'token': Cookie.get('token')
                 }
             })
         if(res.data.status === 'success'){
@@ -118,10 +141,6 @@ const UserStore = create((set, get) => ({
         console.log("Error"+e.toString())
        }
     }
-
-
-
-
 }))
 
 export default UserStore

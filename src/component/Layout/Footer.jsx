@@ -39,6 +39,7 @@ function Footer(props) {
                     </fieldset>
                 </form>
             </footer>
+            <p className='text-center pb-5'>All right are reserved by <a target='_blank' href='https://mahi-lac.vercel.app'>Mobinul Islam Mahi</a></p>
             </div>
         </div>
     );

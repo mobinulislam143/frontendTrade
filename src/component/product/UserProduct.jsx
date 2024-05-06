@@ -22,7 +22,6 @@ function UserProduct(props) {
 
     useEffect(() => {
         if (!loading) {
-            // Reload user product list after removing a product
             UserProductListRequest();
         }
     }, [loading]);

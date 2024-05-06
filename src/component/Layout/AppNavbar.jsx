@@ -14,7 +14,6 @@ function AppNavbar(props) {
         await UserLogoutRequest()
         sessionStorage.clear()
         localStorage.clear()
-        // toast.success('logout success')
         navigate('/')
     }
 

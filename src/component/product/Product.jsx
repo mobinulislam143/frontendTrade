@@ -32,11 +32,12 @@ function Product(props) {
                                                 </div>
                                                 <div className="mt-4 flex justify-between">
                                                     <div>
-                                                        <h3 className="text-sm text-gray-700">{item.name}</h3>
-                                                        <p className="mt-1 text-sm text-gray-500">{item.brand}</p>
+                                                        <h3 className=" text-gray-700">Name: <span className='font-semibold'>{item.name}</span> </h3>
+                                                        <p className="mt-1  text-gray-500">Brand: {item.brand}</p>
                                                     </div>
-                                                    <p className="text-sm font-medium text-gray-900">${item.price}</p>
+                                                    <p className=" font-medium text-gray-900">Price(BDT): <span className='font-semibold'>{item.price}</span></p>
                                                 </div>
+                                                <p className='text-sm text-gray-800'>Desc: {item.description}</p>
                                             </div>
                                         </Link> 
                                     )

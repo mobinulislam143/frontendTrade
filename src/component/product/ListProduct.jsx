@@ -75,7 +75,7 @@ function ListProduct(props) {
                                                     <div>
                                                         <h3 className="text-sm text-gray-700">{item.name}</h3>
                                                         <p className="text-sm font-medium text-gray-900">${item.price}</p>
-                                                    </div>
+                                                    </div> 
                                                     <div>
 
                                                         <p className="text-sm font-medium text-gray-900">C: {item.category}</p>

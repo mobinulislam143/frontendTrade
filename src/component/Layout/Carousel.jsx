@@ -4,6 +4,9 @@ import 'react-awesome-slider/dist/styles.css';
 import { Link } from 'react-router-dom';
 import './Carousel.css';
 import ProductStore from '../Store/ProductStore';
+import withAutoplay from 'react-awesome-slider/dist/autoplay';
+const AutoplaySlider = withAutoplay(AwesomeSlider);
+
 
 function Carousel(props) {
     const {SearchKeyword, SetSearchKeyword} = ProductStore()
@@ -42,13 +45,13 @@ function Carousel(props) {
                             </ul>
                         </div>
                         <div className="col-span-3">
-                        <AwesomeSlider play={true} cancelOnInteraction={false} interval={6000}>
+                        <AutoplaySlider play={true} cancelOnInteraction={false} interval={6000}>
                             <div data-src="carousel/slide1.jpg" />
                             <div data-src="carousel/slide2.jpg" />
                             <div data-src="carousel/slide3.jpg" />
                             <div data-src="carousel/slide4.jpg" />
                          
-                        </AwesomeSlider>
+                        </AutoplaySlider>
                         </div>
                     </div>
                 </div>

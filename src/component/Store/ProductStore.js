@@ -1,13 +1,18 @@
 import axios from 'axios';
 import { create } from 'zustand';
 import { unauthorized } from '../utility/utility';
+import Cookie from 'js-cookie'
+
+
+const BaseUrl = "https://backendtradeapi.onrender.com"
+
  
 const ProductStore = create((set) =>({
     ProductList: null,
 
     ProductListRequest: async () =>{
         try {
-            let res = await axios.get(`/api/All-product`); 
+            let res = await axios.get(`${BaseUrl}/api/All-product`); 
             console.log(res)
             if (res.data['status'] === 'success') {
                 set({ProductList:res.data['data']})
@@ -20,7 +25,11 @@ const ProductStore = create((set) =>({
     UserProductList: null,
     UserProductListRequest: async() => {
        try{
-        let res = await axios.get('/api/userallProduct')
+        let res = await axios.get(`${BaseUrl}/api/userallProduct`, {
+            headers: {
+                'token': Cookie.get('token')
+            }
+        })
         set({UserProductList: res.data['data']})
 
        }catch(e){
@@ -50,7 +59,9 @@ const ProductStore = create((set) =>({
     ProductDetailsRequest: async (productId) => {
         try {
             set({ ProductDetails: null });
-            const res = await axios.get(`/api/ReadProductById/`+productId);
+            const res = await axios.get(`${BaseUrl}/api/ReadProductById/`+productId, {headers: {
+                'token': Cookie.get('token')
+            }});
             if (res.data.status === 'success') {
                 set({ ProductDetails:  res.data['data'][0]});
                 set({UpdateProductForm: res.data['data'][0]})
@@ -63,7 +74,9 @@ const ProductStore = create((set) =>({
     ProductSaveRequest: async(productId,postBody) =>{
         try{
             set({ProductDetails: null})
-            let res = await axios.post(`/api/update-product/${productId}`, postBody)
+            let res = await axios.post(`${BaseUrl}/api/update-product/${productId}`, postBody, {headers: {
+                'token': Cookie.get('token')
+            }})
             return res.data['status'] === "success";
         }catch (e) {
             unauthorized(e.response.status);
@@ -72,7 +85,9 @@ const ProductStore = create((set) =>({
 
     RemoveProductRequest: async(productId)=> {
         try{
-            let res = await axios.get(`/api/deleteProductByUser/${productId}`)
+            let res = await axios.get(`${BaseUrl}/api/deleteProductByUser/${productId}`, {headers: {
+                'token': Cookie.get('token')
+            }})
             // set({UserProductList: res.data['data']})
             return res.data['status'] === 'success';
 
@@ -84,7 +99,9 @@ const ProductStore = create((set) =>({
     newProduct: null,
     CreateProductRequest: async(postBody) => {
         try {
-            const response = await axios.post(`/api/create-product`, postBody);
+            const response = await axios.post(`${BaseUrl}/api/create-product`, postBody, {headers: {
+                'token': Cookie.get('token')
+            }});
             return response.data; 
         } catch (error) {
             console.error("Error creating product:", error);
@@ -100,7 +117,9 @@ const ProductStore = create((set) =>({
 
     ListByNameRequest: async (keyword) => {
         try {
-            let res = await axios.get(`/api/product-by-keyword/${keyword}`);
+            let res = await axios.get(`${BaseUrl}/api/product-by-keyword/${keyword}`, {headers: {
+                'token': Cookie.get('token')
+            }});
             if (res.data['status'] === 'success') {
                 set({ SearchProduct: res.data['data'] });
                 console.log(res.data['data'])
@@ -110,25 +129,14 @@ const ProductStore = create((set) =>({
         }
     },
 
-    // FilterProduct: {
-    //     brand: "",
-    //     category: "",
-        
-    // },
-    // FilterFormOnChange: (name, value) =>{
-    //     set((state) => ({
-    //         FilterProduct:{
-    //             ...state.FilterProduct,
-    //             [name]: value
-    //         }
-    //     }))
-    // },
 
 
     ListByFilterRequest: async(postBody)=>{
         try{
             set({SearchProduct: null})
-            let res = await axios.post(`/api/ProductByBrandAndCategory`, postBody)
+            let res = await axios.post(`${BaseUrl}/api/ProductByBrandAndCategory`, postBody, {headers: {
+                'token': Cookie.get('token')
+            }})
             if(res.data['status']==="success"){
                 set({SearchProduct:res.data['data']})
             }

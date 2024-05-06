@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ProductStore from '../Store/ProductStore';
 import toast from 'react-hot-toast';
 import UpdateProductSkeletong from './UpdateProductSkeletong';
@@ -9,6 +9,8 @@ function UpdateProduct(props) {
     const { id } = useParams();
     const [imageFile, setImageFile] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         // Set the image URL when component mounts
@@ -37,6 +39,8 @@ function UpdateProduct(props) {
             if (res) {
                 toast.success("Product updated successfully");
                 await ProductDetailsRequest(id);
+                navigate('/user-product')
+
             } else {
                 toast.error("Failed to update product");
             }
