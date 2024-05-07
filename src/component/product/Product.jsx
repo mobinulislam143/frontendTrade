@@ -36,6 +36,7 @@ function Product(props) {
                                                         <p className="mt-1  text-gray-500">Brand: {item.brand}</p>
                                                     </div>
                                                     <p className=" font-medium text-gray-900">Price(BDT): <span className='font-semibold'>{item.price}</span></p>
+                                                        <p className="mt-1  text-gray-500">Category: {item.category}</p>
                                                 </div>
                                                 <p className='text-sm text-gray-800'>Desc: {item.description}</p>
                                             </div>
