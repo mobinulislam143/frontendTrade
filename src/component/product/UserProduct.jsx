@@ -5,8 +5,10 @@ import ProductSkeleton from '../skeleton/ProductSkeleton';
 import toast from 'react-hot-toast';
 
 function UserProduct(props) {
-    const { UserProductList, RemoveProductRequest,UserProductListRequest  } = ProductStore();
+    const { UserProductList, RemoveProductRequest, UserProductListRequest } = ProductStore();
     const [loading, setLoading] = useState(false);
+    const [activeUpdateModal, setActiveUpdateModal] = useState(null);
+    const [activeDeleteModal, setActiveDeleteModal] = useState(null);
 
     const removeProduct = async (productId) => {
         try {
@@ -47,39 +49,30 @@ function UserProduct(props) {
                                     <p className="text-sm font-medium text-gray-900">${item.price}</p>
                                 </div>
                                 <div className='mt-4 flex justify-between'>
-
-                                    <label htmlFor="my_modal_5" className='btn bg-yellow-500 hover:bg-yellow-600'>Update</label>
-
-                                    <input type="checkbox" id="my_modal_5" className="modal-toggle" />
+                                    <label htmlFor={`update_modal_${i}`} className='btn bg-yellow-500 hover:bg-yellow-600'>Update</label>
+                                    <input type="checkbox" id={`update_modal_${i}`} className="modal-toggle" />
                                     <div className="modal" role="dialog">
-                                    <div className="modal-box">
-                                        <h3 className="font-bold text-lg">Update!</h3>
-                                        <p className="py-4">Are u want to update Product?</p>
-                                        <div className="modal-action">
-                                        <label htmlFor="my_modal_5" className="btn">Close!</label>
-                                        <Link to={`/update-product/${item['_id']}`} className='btn bg-yellow-500 hover:bg-yellow-600'>Update</Link>
+                                        <div className="modal-box">
+                                            <h3 className="font-bold text-lg">Update!</h3>
+                                            <p className="py-4">Are you sure you want to update this product?</p>
+                                            <div className="modal-action">
+                                                <label htmlFor={`update_modal_${i}`} className="btn">Close</label>
+                                                <Link to={`/update-product/${item['_id']}`} className='btn bg-yellow-500 hover:bg-yellow-600'>Update</Link>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-                                    
-
-
-                                    <label htmlFor="my_modal_6" className='btn bg-red-500 hover:bg-red-600'>Delete</label>
-
-                                    <input type="checkbox" id="my_modal_6" className="modal-toggle" />
+                                    <label htmlFor={`delete_modal_${i}`} className='btn bg-red-500 hover:bg-red-600'>Delete</label>
+                                    <input type="checkbox" id={`delete_modal_${i}`} className="modal-toggle" />
                                     <div className="modal" role="dialog">
-                                    <div className="modal-box">
-                                        <h3 className="font-bold text-lg">Delete!</h3>
-                                        <p className="py-4">Are you sure you want to delete product?</p>
-                                        <div className="modal-action">
-                                        <label htmlFor="my_modal_6" className="btn">Close!</label>
-                                        <button onClick={() => removeProduct(item['_id'])} className='btn bg-red-500 hover:bg-red-600'>Delete</button>
-
+                                        <div className="modal-box">
+                                            <h3 className="font-bold text-lg">Delete!</h3>
+                                            <p className="py-4">Are you sure you want to delete this product?</p>
+                                            <div className="modal-action">
+                                                <label htmlFor={`delete_modal_${i}`} className="btn">Close</label>
+                                                <button onClick={() => removeProduct(item['_id'])} className='btn bg-red-500 hover:bg-red-600'>Delete</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-
-
                                 </div>
                             </div>
                         ))}
